@@ -28,8 +28,8 @@ class LoginForm extends Component {
     `}</style>
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as="h2" color="teal" textAlign="center">
-              <Image src="../logo.png" /> Log-in to your account
+            <Header as="h2" color="green" textAlign="center">
+              <Image src="/src/logo.png" /> Log-in to your account
             </Header>
             <Form size="large">
               <Segment stacked>
@@ -52,7 +52,7 @@ class LoginForm extends Component {
                   onChange={e => this.setState({ password: e.target.value })}
                 />
 
-                <Button color="teal" fluid size="large" onClick={() => this._confirm()}>
+                <Button color="green" fluid size="large" onClick={() => this._confirm()}>
                   Login
                 </Button>
               </Segment>

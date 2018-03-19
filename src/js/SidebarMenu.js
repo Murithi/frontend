@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import { Dropdown, Icon, Input, Menu } from 'semantic-ui-react';
 
 export default class SidebarMenu extends Component {
@@ -11,14 +13,20 @@ export default class SidebarMenu extends Component {
 
     return (
       <Menu vertical>
-        <Menu.Item>
+        <Menu.Item as={Link} to="search" name="search" active={activeItem === 'search'} onClick={this.handleItemClick}>
           <Input placeholder="Search..." />
         </Menu.Item>
 
         <Menu.Item>
           Workshop Management
           <Menu.Menu>
-            <Menu.Item name="search" active={activeItem === 'search'} onClick={this.handleItemClick}>
+            <Menu.Item
+              name="vehicles"
+              as={Link}
+              to="vehicles"
+              active={activeItem === 'vehicles'}
+              onClick={this.handleItemClick}
+            >
               View Car List
             </Menu.Item>
             <Menu.Item name="add" active={activeItem === 'add'} onClick={this.handleItemClick}>

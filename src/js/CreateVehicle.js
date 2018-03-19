@@ -67,7 +67,7 @@ class CreateVehicle extends Component {
     return (
       <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 600 }}>
-          <Header as="h4" color="teal" textAlign="center">
+          <Header as="h4" color="green" textAlign="center">
             Create Vehicle
           </Header>
           <Form size="large" onSubmit={this.onSubmit} loading={loading}>
