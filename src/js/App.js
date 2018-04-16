@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { Container, Header, Segment, Divider, Button, Icon } from 'semantic-ui-react';
-import Vehicle from './Vehicle';
+import { AUTH_TOKEN } from '../constants';
+import Vehicles from './Vehicles';
 import LoginForm from './Login';
 import HomePage from './HomePage';
 import CreateVehicle from './CreateVehicle';
 import CreateVehicleOwner from './CreateVehicleOwner';
+import VehicleOwnerList from './VehicleOwnerList';
 class App extends Component {
   render() {
+    const authToken = localStorage.getItem(AUTH_TOKEN);
     return (
       <Segment>
-        <Button icon="lock" color="green" iconPosition="right" floated="right" onClick={e => this.logout()}>
+        <Button
+          icon="lock"
+          color="green"
+          iconPosition="right"
+          floated="right"
+          onClick={() => {
+            localStorage.removeItem(AUTH_TOKEN);
+            this.props.history.push(`/`);
+          }}
+        >
           {' '}
           Log Out{' '}
         </Button>
@@ -23,16 +35,10 @@ class App extends Component {
         </div>
 
         <Divider clearing />
-        <Switch>
-          <Route exact path="/login" component={LoginForm} />
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/vehicles" component={Vehicle} />
-          <Route exact path="/createvehicle" component={CreateVehicle} />
-          <Route exact path="/createvehicleowner" component={CreateVehicleOwner} />
-        </Switch>
+        {authToken ? <HomePage /> : <LoginForm />}
       </Segment>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

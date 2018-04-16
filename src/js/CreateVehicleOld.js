@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withRouter } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import _ from 'lodash';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dropdown } from 'semantic-ui-react';
 import InlineError from './messages/InlineError';
 import { Form, Segment, Grid, Header, Message } from 'semantic-ui-react';
-import VehicleOwnerFeedQuery from './queries/fetchVehicleOwners';
-
-var options = [];
+const options = [
+  { id: 'cjf7ceyetbv7509252nkkoa6r', text: 'Kewa East Africa', value: 'Kewa East Africa' },
+  { id: 'cjf80daoysywq0925tsclayt1', text: 'County Engineering', value: 'County Engineering' }
+];
 class CreateVehicle extends Component {
   constructor(props) {
     super(props);
@@ -65,14 +65,6 @@ class CreateVehicle extends Component {
   };
   render() {
     const { errors, loading } = this.state;
-
-    if (this.props.VehicleOwnerFeed.loading === false) {
-      const tempOps = this.props.VehicleOwnerFeed.vehicleOwnerFeed;
-      tempOps.map(element => {
-        options.push({ id: element.id, text: element.name, value: element.name });
-      });
-    }
-
     return (
       <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 600 }}>
@@ -154,7 +146,7 @@ class CreateVehicle extends Component {
                 {errors.ownerId && <InlineError text={errors.ownerId} />}
               </Form.Field>
 
-              <Form.Button fluid positive>Submit</Form.Button>
+              <Form.Button>Submit</Form.Button>
             </Segment>
           </Form>
         </Grid.Column>
@@ -223,7 +215,4 @@ const CREATEVEHICLEMUTATION = gql`
     }
   }
 `;
-export default compose(
-  graphql(VehicleOwnerFeedQuery, { name: 'VehicleOwnerFeed' }),
-  graphql(CREATEVEHICLEMUTATION, { name: 'createVehicle' })
-)(withRouter(CreateVehicle));
+export default graphql(CREATEVEHICLEMUTATION, { name: 'createVehicle' })(withRouter(CreateVehicle));

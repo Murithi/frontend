@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
+import { Redirect } from 'react-router';
 import gql from 'graphql-tag';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { AUTH_TOKEN } from '../constants';
@@ -92,7 +93,7 @@ class LoginForm extends Component {
       const { token } = result.data.signup;
       this._saveUserData(token);
     }
-    this.props.history.push(`/`);
+    
   };
 }
 
