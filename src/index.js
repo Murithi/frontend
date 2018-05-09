@@ -65,8 +65,8 @@ const stateLink = withClientState({
     }  
   }
 });
-
-const httpLink = new HttpLink({ uri: 'https://dodkyqakz5.execute-api.eu-west-1.amazonaws.com/staging' });
+const httpLink = new HttpLink({ uri: 'https://localhost:4000' });
+// const httpLink = new HttpLink({ uri: 'https://dodkyqakz5.execute-api.eu-west-1.amazonaws.com/staging' });
 //configure apollo with authentication token
 const middlewareAuthLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem(AUTH_TOKEN);
