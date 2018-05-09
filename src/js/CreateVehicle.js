@@ -79,13 +79,13 @@ class CreateVehicle extends Component {
           <Header as="h4" color="green" textAlign="center">
             Create Vehicle
           </Header>
-          <Form size="large" onSubmit={this.onSubmit} loading={loading}>
-            {errors.global && (
-              <Message negative>
-                <Message.Header> Something went wrong </Message.Header>
-                <p>{errors.global}</p>
-              </Message>
-            )}
+            <Form size="large" onSubmit={this.onSubmit} loading={loading}>
+              {errors.global && (
+                <Message negative>
+                  <Message.Header> Something went wrong </Message.Header>
+                  <p>{errors.global}</p>
+                </Message>
+              )}
             <Segment stacked>
               <Form.Field error={!!errors.registrationNumber}>
                 <label>Registration Number</label>

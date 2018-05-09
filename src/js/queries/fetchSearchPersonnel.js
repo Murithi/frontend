@@ -2,7 +2,8 @@ import gql from 'graphql-tag';
 
 export default gql`
   query PersonnelSearchQuery($filter: String!) {
-    personnel(filter: $filter) {
+    personnelFeed(filter: $filter) {
+      id
       firstName
       lastName  
       nssfId
@@ -16,10 +17,16 @@ export default gql`
       highestEducationLevel
       certificatesUrl
       curriculumVitaeUrl
-      designation
+      designation{
+        id
+        roleName
+      }
       dateOfEmployment
       dateOfTermination
       currentSalary
+      assignedAccount{
+        id
+      }
     }
   }
 `;

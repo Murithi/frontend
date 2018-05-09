@@ -54,7 +54,7 @@ class PersonnelDetails extends Component {
           if (_.isEmpty(data)) return <div>{emptyMessage}</div>;
           console.log(data);
           return (
-            <div>
+            
               <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 900 }}>
                   <Header as="h4" color="green" textAlign="center">
@@ -82,7 +82,7 @@ class PersonnelDetails extends Component {
                       </p>
                       <Divider />
                       <p>
-                        <b>Designation:</b> {data.personnel.designation}
+                        <b>Designation:</b> {data.personnel.designation.roleName}
                       </p>
                       <Divider />
                       <p>
@@ -94,7 +94,7 @@ class PersonnelDetails extends Component {
                       </p>
                       <Divider />
                       <p>
-                        <b>Date of Termination:</b>{' '}
+                        <b>Assigned Project:</b>{' '}
                         {data.personnel.dateOfTermination
                           ? moment(data.personnel.dateOfTermination).format('MMM Do YYYY')
                           : 'N/A'}
@@ -149,7 +149,7 @@ class PersonnelDetails extends Component {
                   </Segment.Group>
                 </Grid.Column>
               </Grid>
-            </div>
+            
           );
         }}
       </Query>

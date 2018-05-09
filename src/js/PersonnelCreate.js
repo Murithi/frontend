@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
-import { graphql } from 'react-apollo';
+import { graphql, compose} from 'react-apollo';
 import axios from 'axios'
 import Phone from 'react-phone-number-input';
 import 'react-phone-number-input/rrui.css';
@@ -10,7 +10,7 @@ import DatePicker from 'react-datepicker';
 import InlineError from './messages/InlineError';
 import { Form, Segment, Grid, Header, Message, Dropdown, Divider, Image } from 'semantic-ui-react';
 import Personnel_Feed_Query from './queries/fetchPersonnel';
-
+import Role_Feed_Query from './queries/fetchRoles';
 import CREATEPERSONNELMUTATION from './mutations/createPersonnel';
 var options = [
     { text: "Male", value: true },
@@ -32,6 +32,7 @@ var educationOptions = [
   
 ]
 
+var roleOptions = [];
 class PersonnelCreate extends Component {
     constructor(props) {
         super(props);
@@ -67,15 +68,24 @@ class PersonnelCreate extends Component {
         this.setState({ dateOfEmployment: date });
       };
     setValue = (e, data) => {
-        console.log(data.value);
+        
         
         this.setState({ gender: data.value });
     };
-    educationSetValue = (e, data) => {
-      console.log(data.value);
+    educationSetValue = (e, data) => {      
       
       this.setState({ highestEducationLevel: data.value });
     };
+  
+  roleValue = (e, data) => {
+    roleOptions.forEach(element => {
+      if (element.value === data.value) { 
+        this.setState({ roleValue: element.value });
+        this.setState({ roleId:element.id  });
+      }
+    });
+    this.setState({ designation:data.value  });
+  };
       
     onSubmit = () => {
         const errors = this.validate();
@@ -93,8 +103,9 @@ class PersonnelCreate extends Component {
         if (err) {
           console.error(err);
         }
-
+       
         if (response.body.secure_url !== '') {
+          console.error(response.body);
           this.setState({
             photoUrl: response.body.secure_url
 
@@ -163,8 +174,7 @@ class PersonnelCreate extends Component {
       if (!this.state.designation) errors.designation = "Can't be blank";
       if (!this.state.dateOfEmployment) errors.dateOfEmployment = "Can't be blank";
       if (!this.state.currentSalary) errors.currentSalary = "Can't be blank";
-      console.log("Validation done");
-      console.log(Object.keys(errors) );
+    
       if (Object.keys(errors).length === 0) {
           this.setState({ loading: true });
         
@@ -176,7 +186,13 @@ class PersonnelCreate extends Component {
    
     
   render() {
-      const { errors, loading } = this.state;
+    const { errors, loading } = this.state;
+    if (this.props.roleFeed.loading === false) { 
+      let tempOp = this.props.roleFeed.personnelRoleFeed;
+      tempOp.map(element => {
+          roleOptions.push({ id: element.id, text: element.roleName, value: element.roleName });
+      });
+    }
       return (
           <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
               <Grid.Column style={{ maxWidth: 800 }}>
@@ -355,10 +371,12 @@ class PersonnelCreate extends Component {
                 <Divider/>
                 <Form.Field error={!!errors.designation}>
                 <label>Designation</label>
-                <input
-                  placeholder="designation"
+                  <Dropdown
+                  search
+                  selection    
+                  options={roleOptions}
                   value={this.state.designation}
-                  onChange={e => this.setState({ designation: e.target.value })}
+                  onChange={this.roleValue.bind(this)}
                 />
                 {errors.designation && <InlineError text={errors.designation} />}
                 </Form.Field>  
@@ -428,7 +446,7 @@ class PersonnelCreate extends Component {
             nhifId, idNumber, phoneNumber,
             gender, location, addressNo, 
             photoUrl, highestEducationLevel, certificatesUrl,
-            curriculumVitaeUrl, designation, dateOfEmployment,
+            curriculumVitaeUrl, roleId, dateOfEmployment,
             dateOfTermination, currentSalary } = this.state
 
 
@@ -437,7 +455,7 @@ class PersonnelCreate extends Component {
                 nhifId, idNumber, phoneNumber,
                 gender, location, addressNo, 
                 photoUrl, highestEducationLevel, certificatesUrl,
-                curriculumVitaeUrl, designation, dateOfEmployment,
+                curriculumVitaeUrl, roleId, dateOfEmployment,
                 dateOfTermination, currentSalary },
             refetchQueries: [{ query: Personnel_Feed_Query }]
         })
@@ -446,4 +464,5 @@ class PersonnelCreate extends Component {
 
 }
 
-export default graphql(CREATEPERSONNELMUTATION, {name:"createPersonnel"})(PersonnelCreate);
+export default compose(graphql(Role_Feed_Query, { name: 'roleFeed' }),
+  graphql(CREATEPERSONNELMUTATION, { name: "createPersonnel" }))(PersonnelCreate);

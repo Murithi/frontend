@@ -28,6 +28,12 @@ import DriversAdd from './DriversCreate';
 import DriversList from './DriversList';
 import AssignVehicle from './VehicleAssign';
 import AssignPersonnelProject from './AssignPersonnelProject';
+import PersonnelByRolesListing from './PersonnelByRolesListing';
+import ServiceRequisitionsList from './ServiceRequisitionsList';
+import PersonnelAttendanceRecord from "./PersonnelAttendanceRecord";
+import Users from './Users';
+import RegisterUsers from './RegisterUsers'
+import Signup from './Signup';
 class HomePage extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +53,8 @@ class HomePage extends Component {
         <Grid.Column stretched width={13}>
           <Segment>
             <Switch>
+              <Route exact path='/users/list' component={Users} />
+              <Route exact path='/users/register' component={RegisterUsers} />
               <Route exact path="/vehicles/list" component={Vehicles} />  
               <Route exact path="/vehicles/new" component={CreateVehicle} />
               <Route exact path='/vehicles/assign' component={AssignVehicle}/>
@@ -63,10 +71,14 @@ class HomePage extends Component {
               <Route exact path="/personnel/list" component={PersonnelList} />              
               <Route exact path="/personnel/new" component={PersonnelCreate} />             
               <Route exact path='/personnel/termination/list' component={TerminationList} />
-              <Route exact path='/personnel/termination/new' component={SearchPersonnel} />              
+              <Route exact path='/personnel/termination/new' component={SearchPersonnel} />  
+              <Route exact path='/personnel/search' component={SearchPersonnel}/>
               <Route exact path='/personnel/roles/list' component={PersonnelRoles} />  
-              <Route exact path='/personnel/roles/new' component={PersonnelRolesCreate} />  
+              <Route exact path="/personnel/attendance" component={PersonnelAttendanceRecord}/>
+              <Route exact path='/personnel/roles/new' component={PersonnelRolesCreate} /> 
+              <Route exact path='/personnel/roles/:id' component={PersonnelByRolesListing} />  
               <Route exact path='/personnel/termination/:id' component={PersonnelTerminate} /> 
+              
               <Route exact path="/personnel/:id" component={PersonnelDetails} />
               <Route exact path="/projects/list" component={ProjectList} />
               <Route exact path='/projects/new' component={ProjectCreate} />
@@ -76,7 +88,8 @@ class HomePage extends Component {
               <Route exact path='/sections/new' component={SectionsCreate} />
               <Route exact path = '/drivers/list' component={DriversList} />
               <Route exact path='/drivers/new' component={DriversAdd} />
-             
+              <Route exact path='/servicerequisitions/list' component={ServiceRequisitionsList} />
+              <Route exact path='/signup' component={Signup}/>
               
             </Switch>
           </Segment>

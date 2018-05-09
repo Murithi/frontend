@@ -58,7 +58,7 @@ class SectionsList extends Component {
           }
         return (
             
-            <div>
+            <React.Fragment>
                 <Header as="h4" color="green" textAlign="center">
                     Section List
                 </Header>
@@ -122,7 +122,7 @@ class SectionsList extends Component {
             </Table.Row>
           </Table.Footer>
                 </Table>
-            </div>
+            </React.Fragment>
         );
     }
 

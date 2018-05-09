@@ -10,6 +10,10 @@ export default gql`
             projectStartDate
             projectCompletionDate
             projectLocation
+            sections{
+            id
+            sectionName
+          }
         }
     }
 `

@@ -16,6 +16,7 @@ export default class SidebarMenu extends Component {
         <Menu.Item as={Link} to="search" name="search" active={activeItem === 'search'} onClick={this.handleItemClick}>
           <Input placeholder="Search..." />
         </Menu.Item>
+        
        
          {/* Personnel Management */}
       {/* ___________________________________________________________________________________________________________________ */}
@@ -31,6 +32,24 @@ export default class SidebarMenu extends Component {
                 onClick={this.handleItemClick}
               >
                 Employee List
+              </Menu.Item>
+              <Menu.Item
+                name="createpersonnel"
+                as={Link}
+                to="/personnel/new"
+                active={activeItem === 'createpersonnel'}
+                onClick={this.handleItemClick}
+              >
+                Add Employee 
+              </Menu.Item>
+              <Menu.Item
+                name="attendance"
+                as={Link}
+                to="/personnel/attendance"
+                active={activeItem === 'attendance'}
+                onClick={this.handleItemClick}
+              >
+                Add Employee Attendance 
               </Menu.Item>
               <Menu.Item
                 name="terminatedpersonnel"
@@ -206,6 +225,33 @@ export default class SidebarMenu extends Component {
               
           </Menu.Menu>
           
+        </Menu.Item>
+
+          {/* User Management */}
+      {/* ___________________________________________________________________________________________________________________ */}
+      <Menu.Item>
+          User Management
+          <Divider />
+          <Menu.Menu>
+            <Menu.Item
+            name="viewUsers"
+              to='/users/list'
+              as={Link}
+              active={activeItem === 'viewUsers'}
+              onClick={this.handleItemClick}  
+            >
+              View Users
+              </Menu.Item>
+              <Menu.Item
+            name="createUsers"
+              to='/users/register'
+              as={Link}
+              active={activeItem === 'createUsers'}
+              onClick={this.handleItemClick}  
+            >
+              Register New User
+              </Menu.Item>
+          </Menu.Menu>
         </Menu.Item>
             </Menu>
     )

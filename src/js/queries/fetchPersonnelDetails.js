@@ -16,7 +16,10 @@ export default gql`
       highestEducationLevel
       certificatesUrl
       curriculumVitaeUrl
-      designation
+      designation{
+      id
+      roleName
+    }
       dateOfEmployment
       dateOfTermination
       currentSalary

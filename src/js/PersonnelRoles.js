@@ -73,7 +73,9 @@ class PersonnelRoles extends Component {
           <Table.Body>
             {this.props.roleFeed.personnelRoleFeed.map(role => (
               <Table.Row>
-                <Table.Cell>{role.roleName}</Table.Cell>
+                <Table.Cell>
+                <Link to={`/personnel/roles/${role.id}`}> {role.roleName} </Link>
+                  </Table.Cell>
                 <Table.Cell>{role.minimumSalary}</Table.Cell>
                 <Table.Cell>{role.maximumSalary}</Table.Cell>
                 <Table.Cell>

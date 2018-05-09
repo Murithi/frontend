@@ -9,7 +9,7 @@ import { Header, Form, Table, Grid, Message, Icon, Menu, Input,  Divider, Image,
 
 import Personnel_Feed_Query from './queries/fetchSearchPersonnel';
 
-class CreateTermination extends Component {
+class PersonnelDetails extends Component {
     constructor(props) {
         super(props);
         this.state = { idNumber:'' }
@@ -197,4 +197,4 @@ class CreateTermination extends Component {
     }
 }
  
-export default CreateTermination;
+export default PersonnelDetails;

@@ -54,7 +54,7 @@ class SearchPersonnel extends Component {
  
         return (
             <div>
-           <b> Search Employee to terminate by National ID Number</b>
+           <b> Search Employee by National ID Number</b>
             <Divider/>        
         <Form onSubmit={()=>this._executeSearch()}>
             <Form.Group unstackable widths={2}>
@@ -68,7 +68,7 @@ class SearchPersonnel extends Component {
                 </Form> 
         <Divider/>        
         {
-            (this.state.personnel.length > 0)
+            (this.state.personnel.length !== 0)
                 ? <div>
                         <Table celled selectable >
                         <Table.Header>
@@ -77,26 +77,24 @@ class SearchPersonnel extends Component {
                             <Table.HeaderCell>First Name</Table.HeaderCell>
                             <Table.HeaderCell>Last Name</Table.HeaderCell>
                             <Table.HeaderCell>Designation </Table.HeaderCell>
-                            <Table.HeaderCell> Edit</Table.HeaderCell>
-                            <Table.HeaderCell> Delete</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {this.state.personnel.map(person => (
+                            
                             <Table.Row>
                                 <Table.Cell>
-                                <Link to={`/personnel/termination/${person.id}`}>{person.idNumber}</Link>
+                                <Link to={`/personnel/${this.state.personnel.id}`}>{this.state.personnel.idNumber}</Link>
                                 </Table.Cell>
-                                <Table.Cell>{person.firstName}</Table.Cell>
-                                <Table.Cell>{person.lastName}</Table.Cell>
-                                <Table.Cell>{person.designation}</Table.Cell>
-                                <Table.Cell>{person.dateOfTermination}</Table.Cell>                                
+                                <Table.Cell>{this.state.personnel.firstName}</Table.Cell>
+                                <Table.Cell>{this.state.personnel.lastName}</Table.Cell>
+                                <Table.Cell>{this.state.personnel.designation.roleName}</Table.Cell>
+                                
                             </Table.Row>
-                            ))}
+                            
                                         </Table.Body> 
                         </Table>              
                     </div>
-                : <div></div>
+                : <div>Nothing Found</div>
         } 
         </div>
             
@@ -108,8 +106,9 @@ class SearchPersonnel extends Component {
           query: Personnel_Feed_Query,
           variables: { filter },
         })
-        const personnel = result.data.personnelFeed.personnel
-        this.setState({ personnel })
+        console.log(result.data.personnelFeed[0]);
+        const personnel = result.data.personnelFeed[0];
+        this.setState({ personnel: personnel });
     }
 }
  

@@ -58,7 +58,7 @@ class PersonnelList extends Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
         <Header as="h4" color="green" textAlign="center">
           Personnel List
         </Header>
@@ -96,9 +96,9 @@ class PersonnelList extends Component {
           <Table.Footer>
             <Table.Row>
               <Table.HeaderCell colSpan="6">
-                <Link to={'/personnel/new'}>
+                {/* <Link to={'/personnel/new'}>
                   <Icon name="add circle green right" size="huge" />
-                </Link>
+                </Link> */}
 
                 <Menu floated="right" pagination>
                   <Menu.Item as="a" icon>
@@ -116,7 +116,7 @@ class PersonnelList extends Component {
             </Table.Row>
           </Table.Footer>
         </Table>
-      </div>
+      </React.Fragment>
     );
   }
 

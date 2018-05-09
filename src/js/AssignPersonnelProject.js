@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-
-
+import gql from 'graphql-tag';
+import { Grid, Header } from 'semantic-ui-react';
+import SearchPersonnelAssign from './SearchPersonnelAssign';
 var personnelOptions = [];
 var projectOptions = [];
 class AssignPersonnelProject extends Component {
@@ -10,10 +11,9 @@ class AssignPersonnelProject extends Component {
             id: '',
             personnelvalue: '',
             personnelID:'',
-            projectAssignedTo: '',
-            
+            projectAssignedTo: '',            
             projectValue: '',
-            sections: {}
+            sections: {},
             errors: {},
             loading:false
          }
@@ -61,18 +61,30 @@ class AssignPersonnelProject extends Component {
     }
     render() { 
         const { errors, loading } = this.state;
-        return ( <h2>Hey There</h2> )
-    }
-}
-
-const PERSONNELFEEDQUERY = gql`
+        return ( <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
+        <Grid.Column style={{ maxWidth: 900 }}>
+          <Header as="h4" color="green" textAlign="center">
+            Personnel Details
+          </Header> 
+          <SearchPersonnelAssign/>      
+            </Grid.Column>
+          </Grid>  
+          )
+                }
+            }
+            
+            const PERSONNELFEEDQUERY = gql`
 query DriversQueryFeed{
-  driverFeed{xc
+  driverFeed{
     id
       personnelDetails{
       id
       firstName
       lastName
+      photoUrl
+      assignedToProject
+      projectAssignedTo
+      
     }
   }
 }

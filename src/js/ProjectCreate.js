@@ -49,7 +49,8 @@ class ProjectCreate extends Component {
     render() { 
         const { errors, loading } = this.state;
         return ( 
-            <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
+            <Grid textAlign="center" style={{ height: '100%' }}
+                verticalAlign="middle">
                 <Grid.Column style={{ maxWidth: 600 }}>
                     <Header as="h4" color="green" textAlign="center">
                         Create Project

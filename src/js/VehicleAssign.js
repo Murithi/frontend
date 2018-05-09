@@ -176,7 +176,7 @@ const CREATEASSIGNVEHICLEMUTATION = gql`
 mutation assignVehicle(
   $vehicleId:ID!,
   $assigneeId: String!,
-  $assignedStatus: Boolean!
+  $assignedStatus: BoolMean!
 ){
   editVehicleAssignee(
     id:$vehicleId,

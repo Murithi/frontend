@@ -15,7 +15,7 @@ export default gql`
     $highestEducationLevel: String!,   
     $certificatesUrl: String!,
     $curriculumVitaeUrl: String!, 
-    $designation:String!, 
+    $roleId:String!, 
     $dateOfEmployment: DateTime!, 
     $currentSalary: String
   ) {
@@ -33,7 +33,7 @@ export default gql`
       highestEducationLevel: $highestEducationLevel
       certificatesUrl: $certificatesUrl
       curriculumVitaeUrl: $curriculumVitaeUrl
-      designation: $designation
+      roleId: $roleId
       dateOfEmployment: $dateOfEmployment
       currentSalary: $currentSalary
     ) {
