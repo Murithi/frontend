@@ -2,23 +2,37 @@ import gql from 'graphql-tag';
 
 export default gql`
 query serviceRequisitionFeed{
-  serviceRequisitionFeed{
+  requestServiceFeed{
     id
-    requestedBy{
-      idNumber
-      firstName
-      lastName
-    }
     vehicleToBeServiced{
       registrationNumber
+    
     }
-  	approvalStatus
-    approvedBy {
-      id
-    }
-    approxCost
-    createdAt
     otherDetails
+    approxCostOFService
+    createdAt
+    requestedBy{
+      personnelDetails{
+        firstName
+        lastName
+      }
+    }
+    approvalStatus
+    approvalDate
+    requestApprovedBy{
+      personnelDetails{
+        firstName
+        lastName
+      }
+    }
+    paymentsDetails{
+      amountIssued
+      dateIssued
+      amountCharged     
+      amountReturned
+      dateReported
+    }
+    
   }
 }
 `;

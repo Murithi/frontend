@@ -60,8 +60,7 @@ class PersonnelTerminate extends Component {
         const errors = {}
       if (!this.state.reasonsForTermination) errors.reasonsForTermination = "Can't be blank";
       if (!this.state.dateOfTermination) errors.dateOfTermination = "Can't be blank";
-    console.log("Validation done");
-      console.log(Object.keys(errors) );
+
       if (Object.keys(errors).length === 0) {
           this.setState({ loading: true });
         
@@ -80,7 +79,7 @@ class PersonnelTerminate extends Component {
           if (loading) return <div>{loadingMessage}</div>;
           if (error) return <div>{timeoutMessage}</div>;
           if (_.isEmpty(personnel)) return <div>{emptyMessage}</div>;
-          console.log(personnel);
+         
           return (
             <div>
               <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">

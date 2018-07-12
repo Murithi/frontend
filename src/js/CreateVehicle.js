@@ -4,12 +4,12 @@ import gql from 'graphql-tag';
 import { withRouter } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import _ from 'lodash';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Dropdown } from 'semantic-ui-react';
 import InlineError from './messages/InlineError';
 import { Form, Segment, Grid, Header, Message } from 'semantic-ui-react';
 import VehicleOwnerFeedQuery from './queries/fetchVehicleOwners';
+import Vehicle_Feed_Query from './queries/fetchVehicles';
 
 var options = [];
 class CreateVehicle extends Component {
@@ -69,7 +69,7 @@ class CreateVehicle extends Component {
     if (this.props.VehicleOwnerFeed.loading === false) {
       const tempOps = this.props.VehicleOwnerFeed.vehicleOwnerFeed;
       tempOps.map(element => {
-        options.push({ id: element.id, text: element.name, value: element.name });
+        return options.push({ id: element.id, text: element.name, value: element.name });
       });
     }
 
@@ -185,7 +185,8 @@ class CreateVehicle extends Component {
         insuranceRenewalDate,
         manufactureDate,
         ownerId
-      }
+      },
+      refetchQueries: [{query: Vehicle_Feed_Query}]
     });
     this.props.history.push(`/vehicle/list`);
   };
@@ -200,7 +201,7 @@ const CREATEVEHICLEMUTATION = gql`
     $insuranceValuation: Int
     $insuranceRenewalDate: DateTime
     $manufactureDate: DateTime
-    $ownerId: String!
+    $ownerId: ID!
   ) {
     addVehicle(
       registrationNumber: $registrationNumber

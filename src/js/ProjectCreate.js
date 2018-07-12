@@ -7,6 +7,7 @@ import  {   Divider, Form, Segment, Grid, Header, Message } from 'semantic-ui-re
 import { gql } from 'graphql-tag';
 import DatePicker from 'react-datepicker';
 import ProjectFeedQuery from './queries/fetchProjectList';
+
 import CREATEPROJECTMUTATION from './mutations/createProject';
 class ProjectCreate extends Component {
     constructor(props) {
@@ -139,7 +140,8 @@ class ProjectCreate extends Component {
                 projectStartDate,
                 projectCompletionDate,
                 projectLocation
-            }
+            },
+            refetchQueries: [{query: ProjectFeedQuery}]
            
         });
         this.props.history.push('/projects/list');

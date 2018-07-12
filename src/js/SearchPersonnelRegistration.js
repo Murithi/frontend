@@ -50,7 +50,7 @@ class SearchPersonnelAssign extends Component {
           );
  
         return (
-            <div>
+            <React.Fragment>
            <b> Search Employee by National ID Number</b>
             <Divider/>        
         <Form onSubmit={()=>this._executeSearch()}>
@@ -66,7 +66,7 @@ class SearchPersonnelAssign extends Component {
         <Divider/>        
         
                     
-        </div>
+        </React.Fragment>
             
         )
     }
@@ -98,8 +98,7 @@ class SearchPersonnelAssign extends Component {
     }
 
     _updatePersonnel = async (index, value) => { 
-        console.log(index, value)
-        console.log(this.props);
+
         const result = await this.props.updatePersonnel({
             variables: {
                 index: index,

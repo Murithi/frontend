@@ -17,7 +17,7 @@ export default gql`
     $curriculumVitaeUrl: String!, 
     $roleId:String!, 
     $dateOfEmployment: DateTime!, 
-    $currentSalary: String
+    $currentSalary: String!
   ) {
     addPersonnel(
       firstName:$firstName

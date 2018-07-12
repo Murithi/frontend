@@ -3,7 +3,7 @@ import { graphql, compose } from 'react-apollo'
 import DatePicker from 'react-datepicker';
 import gql from 'graphql-tag'
 import moment from 'moment';
-import { Header, Form, Table, Dropdown, Checkbox, Radio, Grid, Message, Icon, Menu, Input,  Divider, Image, Segment } from 'semantic-ui-react';
+import { Header, Form, Checkbox,  Grid, Message,  Divider, Image, Segment } from 'semantic-ui-react';
 import InlineError from './messages/InlineError';
 import SearchPersonnelRegistration from './SearchPersonnelRegistration';
 import getPersonnel from './graphqlCache/getPersonnel';
@@ -61,7 +61,7 @@ class PersonnelAttendanceRecord extends Component {
             <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
         <Grid.Column style={{ maxWidth: 600 }}>
           <Header as="h4" color="green" textAlign="center">
-            User Details
+            Personnel Details
           </Header> 
           <SearchPersonnelRegistration/>      
             </Grid.Column>
@@ -69,7 +69,7 @@ class PersonnelAttendanceRecord extends Component {
         <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
             <Grid.Column style={{ maxWidth: '100%' }}>
               <Header as="h4" color="green" textAlign="center">
-             User Details
+             Personnel Details
               </Header> 
                     <Segment.Group horizontal loading={loading}>
                         <Segment>
@@ -199,7 +199,7 @@ const UPDATEPERSONNELATTENDANCE = gql`
 `;
 export default compose(graphql(getPersonnel, {
     props: ({ data: { loading, error, searchedPersonnelDetails } }) => {
-        console.log(searchedPersonnelDetails);
+       
         if(loading) { return { loading } }        
         
       

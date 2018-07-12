@@ -1,27 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'semantic-ui-css/semantic.min.css';
+import 'semantic-ui-css/semantic.min.css'; 
 import App from './js/App';
 // import registerServiceWorker from './registerServiceWorker';
 import { ApolloProvider } from 'react-apollo';
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient, HttpLink, InMemoryCache, ApolloLink } from "apollo-boost";
 import { BrowserRouter } from 'react-router-dom';
 import { AUTH_TOKEN } from './constants';
-import { ApolloLink } from 'apollo-link';
 import { withClientState } from 'apollo-link-state'
 import gql from 'graphql-tag';
 
 const cache = new InMemoryCache()
 const defaultState = {
-  usercredentials: {
-    __typename: 'usercredentials',
-    username: 'eric',
+  userDetails: {
+    __typename: 'UserDetails',
+    userName: '',
     loggedIn: false,
+    userRole:'',
   },
   searchedPersonnelDetails: {
-    __typename: 'usercredentials',
+    __typename: 'UserCredentials',
       firstName: '',
       lastName: '',
       personnelID: '',
@@ -37,10 +35,10 @@ const stateLink = withClientState({
   cache,
   defaults: defaultState,
   resolvers: {
+ 
     Mutation: {
       updatePersonnel: (_, { index, value }, { cache }) => { 
-        console.log("updating cache:")
-        console.log(index, value)
+        
         const query = gql`
          query {
           searchedPersonnelDetails @client {
@@ -59,16 +57,40 @@ const stateLink = withClientState({
             [index]:value
           }
         }
-        console.log(data);
+       
         cache.writeData({query,data})
+      },
+
+      updateUserDetails: (_, { index, value }, { cache })=> { 
+       
+
+        const query = gql`
+          query{
+            userDetails @client{
+              userName
+              loggedIn
+              userRole
+            }
+          }
+        `
+        const previous = cache.readQuery({ query })
+          const data = {
+          userDetails: {
+            ...previous.userDetails,
+            [index]:value
+          }
+        }
+
+        cache.writeData({ query, data })
+        
       }
+
     }  
   }
 });
-//const httpLink = new HttpLink({ uri: 'https://localhost:4000' });
-// console.log(process.env.GRAPHCOOLURL);
-// const httpLink = new HttpLink({ env.GRAPHCOOLURL });
-const httpLink = new HttpLink({ uri: 'https://dodkyqakz5.execute-api.eu-west-1.amazonaws.com/staging' });
+  const httpLink = new HttpLink({ uri: 'http://localhost:4000' });
+// const httpLink = new HttpLink({ uri: 'http://167.99.141.118:4000' });
+// const httpLink = new HttpLink({ uri: 'https://dodkyqakz5.execute-api.eu-west-1.amazonaws.com/staging' });
 //configure apollo with authentication token
 const middlewareAuthLink = new ApolloLink((operation, forward) => {
   const token = localStorage.getItem(AUTH_TOKEN);
@@ -102,4 +124,4 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById('root')
 );
-// registerServiceWorker();
+

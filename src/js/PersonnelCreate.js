@@ -431,7 +431,7 @@ class PersonnelCreate extends Component {
                 />
                 {errors.currentSalary && <InlineError text={errors.currentSalary} />}
                 </Form.Field>          
-              <Form.Button>Submit</Form.Button>          
+              <Form.Button fluid positive>Submit</Form.Button>          
                           
                           
             </Segment>

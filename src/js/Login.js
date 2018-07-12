@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
-import { Redirect } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { AUTH_TOKEN } from '../constants';
+import upateUserDetails from './graphqlCache/updateUserDetails';
 
 class LoginForm extends Component {
   state = {
@@ -12,6 +14,7 @@ class LoginForm extends Component {
     password: '',
     name: ''
   };
+
   render() {
     return (
       <div className="login-form">
@@ -59,7 +62,11 @@ class LoginForm extends Component {
               </Segment>
             </Form>
             <Message>
-              New to us? <a href="#">Sign Up</a>
+              New to us?
+              
+              <Link to={`/signup`}>
+              Sign Up
+              </Link>
             </Message>
           </Grid.Column>
         </Grid>
@@ -73,6 +80,7 @@ class LoginForm extends Component {
 
   _confirm = async () => {
     const { name, email, password } = this.state;
+   
     if (this.state.login) {
       const result = await this.props.loginMutation({
         variables: {
@@ -80,8 +88,17 @@ class LoginForm extends Component {
           password
         }
       });
+   
       const { token } = result.data.login;
+      const { name, role } = result.data.login.user;
+      console.log('userRole', role);
+      this._updateUserDetails('userName', name);
+      this._updateUserDetails('userRole', role);
+      this._updateUserDetails('loggedIn', true);
+      // this._createUserDetails(name, role, true)
+      
       this._saveUserData(token);
+      this.props.history.push(`/`);
     } else {
       const result = await this.props.signupMutation({
         variables: {
@@ -95,12 +112,27 @@ class LoginForm extends Component {
     }
     
   };
+
+  _updateUserDetails = async (index, value) => {
+  
+    const result = await this.props.updateUserDetails({
+      variables: {
+        index: index,
+        value: value
+      }
+    })
+  }
 }
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation($email: String!, $password: String!, $name: String!) {
     signup(email: $email, password: $password, name: $name) {
-      token
+    user{
+      name
+      role      
+    }
+    token
+
     }
   }
 `;
@@ -108,11 +140,17 @@ const SIGNUP_MUTATION = gql`
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      token
+    user{
+      name
+      role      
+    }
+    token
     }
   }
 `;
 export default compose(
   graphql(SIGNUP_MUTATION, { name: 'signupMutation' }),
-  graphql(LOGIN_MUTATION, { name: 'loginMutation' })
-)(LoginForm);
+  graphql(LOGIN_MUTATION, { name: 'loginMutation' }),
+  graphql(upateUserDetails, {name: 'updateUserDetails'}),
+
+)(withRouter(LoginForm));

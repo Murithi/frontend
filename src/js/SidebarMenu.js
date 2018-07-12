@@ -169,6 +169,15 @@ export default class SidebarMenu extends Component {
             >
               Assign Vehicles
             </Menu.Item>
+            <Menu.Item
+              name="assignedVehicleList"
+              to='/vehicles/assignment/list'
+              as={Link}
+              active={activeItem == 'asignedVehicleList'}
+              onClick={this.handleItemClick}
+            >
+              Assigned Vehicle List
+              </Menu.Item>
           </Menu.Menu>
         </Menu.Item>
         {/* Stores Management */}
@@ -225,6 +234,32 @@ export default class SidebarMenu extends Component {
               
           </Menu.Menu>
           
+        </Menu.Item>
+        {/* Requisitions Management */}
+      {/* ___________________________________________________________________________________________________________________ */}
+      <Menu.Item>
+          Requisitions Management
+          <Divider />
+          <Menu.Menu>
+            <Menu.Item
+            name="viewServiceList"
+              to='/requisitions/serviceList'
+              as={Link}
+              active={activeItem === 'viewServiceList'}
+              onClick={this.handleItemClick}  
+            >
+              View Service Requisition List
+              </Menu.Item>
+              <Menu.Item
+            name="createUsers"
+              to='/users/register'
+              as={Link}
+              active={activeItem === 'createUsers'}
+              onClick={this.handleItemClick}  
+            >
+              Register New User
+              </Menu.Item>
+          </Menu.Menu>
         </Menu.Item>
 
           {/* User Management */}

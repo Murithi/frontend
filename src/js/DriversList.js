@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Divider,  Grid, Header, Message, Icon, Menu, Table } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
+import moment from 'moment';
 import { Link } from 'react-router-dom';
 import DRIVERSFEEDQUERY from './queries/fetchDrivers';
+import gql from 'graphql-tag';
+import { compose } from 'redux';
 
 
 class DriversList extends Component {
@@ -11,7 +14,7 @@ class DriversList extends Component {
         this.state = {  }
     }
     render() { 
-        console.log(this.props);
+       
     const loadingMessage = (
         <Message icon info>
           <Icon name="circle notched" loading />
@@ -81,7 +84,8 @@ class DriversList extends Component {
                     <Table.Cell>{driver.personnelDetails.firstName}</Table.Cell>
                     <Table.Cell>{driver.personnelDetails.lastName}</Table.Cell>
                     <Table.Cell>{driver.licenseNumber}</Table.Cell>
-                    <Table.Cell>{driver.licenseExpiry}</Table.Cell>                
+                      
+                    <Table.Cell>{moment(driver.licenseExpiry).format('MMM Do YYYY')}</Table.Cell>  
                     <Table.Cell>
                     <Icon onClick={() => this._deleteDriver(driver.id)} name="delete circle red" />
                     </Table.Cell>
@@ -115,6 +119,25 @@ class DriversList extends Component {
             </Grid>    
         )
     }
+  _deleteDriver = async (id) => {
+    await this.props.deleteDriver({
+      variables: { id }
+
+    });
+    this.props.driversFeed.refetch()
+    this.props.history.push('/drivers/list')
+    }
 }
+
+const CREATEDRIVERDELETEMUTATION = gql`
+mutation deleteDriver($id:ID!){
+  removeDriver(id:$id){
+    id
+  }
+}
+`
  
-export default graphql(DRIVERSFEEDQUERY, { name:'driversFeed'}) (DriversList);
+export default compose(
+  graphql(DRIVERSFEEDQUERY, { name: 'driversFeed' }),
+  graphql(CREATEDRIVERDELETEMUTATION, {name:'deleteDriver'})
+)(DriversList);

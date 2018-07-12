@@ -7,6 +7,12 @@ export default gql`
       firstName
       lastName
       idNumber
+      designation{
+        roleName
+      }
+      projectAssignedTo{
+        projectName
+      }
     }
   }
 `;

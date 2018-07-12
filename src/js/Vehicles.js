@@ -13,8 +13,7 @@ class Vehicles extends Component {
   };
 
   render() {
-    // const recievedVehiclesToRender = this.props.VehicleFeed.vehicleFeed;
-    console.log(this.props.VehicleFeed);
+  
     const loadingMessage = (
       <Message icon info>
         <Icon name="circle notched" loading />

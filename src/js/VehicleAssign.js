@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { Form, Segment, Grid, Header, Message, Dropdown, Divider, Image } from 'semantic-ui-react';
+import moment from 'moment';
+import { Form, Segment, Grid, Header, Message, Dropdown, Divider } from 'semantic-ui-react';
 import InlineError from './messages/InlineError';
+import DRIVERSFEEDQUERY from './queries/fetchDrivers';
 
 var personnelOptions = [];
 var vehicleOptions = [];
@@ -12,10 +14,10 @@ class AssignVehicle extends Component {
         this.state = {
            
             dateAssigned:'',
-            id: '',
+            motorVehicleId: '',
             vehicleValue:'',
             personnelvalue: '',
-            personnelId:'',
+            assigneeId:'',
             errors: {},
             loading: false
         }
@@ -29,7 +31,7 @@ class AssignVehicle extends Component {
             if (element.value === data.value) { 
             
                 this.setState({ personnelvalue: data.value });
-                this.setState({ personnelId: element.id });
+                this.setState({ assigneeId: element.id });
                 return;
             }
             
@@ -42,18 +44,18 @@ class AssignVehicle extends Component {
         vehicleOptions.forEach(element => { 
             
             if (element.value === data.value) { 
-                this.setState({ id: element.id });
-                this.setState({ vehicleValue:element.Value  });
+                this.setState({ motorVehicleId: element.id });
+                this.setState({ vehicleValue: element.Value });
+                return
             }
         })
     }
     validate = () => { 
         const errors = {};
         if (!this.state.assigneeId) errors.assigneeId = "Can't be blank";
-        if (!this.state.dateAssigned) errors.dateAssigned = "Can't be blank";
-        if (!this.state.personnelId) errors.personnelId = "Can't be blank";
-        if (!this.state.id) errors.id = "Can't be blank";
-        console.log(errors);
+        if (!this.state.motorVehicleId) errors.motorVehicleId = "Can't be blank";
+        
+   
         if (Object.keys(errors).length === 0) {
             this.setState({ loading: true });
             this._assignVehicle();
@@ -62,28 +64,37 @@ class AssignVehicle extends Component {
     }
     
     onSubmit = () => {
+        
         const errors = this.validate();
         this.setState({ errors });
     }
     render() { 
+       
         const { errors, loading } = this.state;
-        console.log(this.props);
         if(this.props.personnelFeed.loading === false) { 
             let tempOps = this.props.personnelFeed.driverFeed;
+            personnelOptions = [];
             tempOps.map(element => {
-                personnelOptions.push(
-                    {
-                        id: element.personnelDetails.id,
-                        text: element.personnelDetails.firstName + " " + element.personnelDetails.lastName,
-                        value: element.personnelDetails.firstName + " " + element.personnelDetails.lastName
-                    }
-                );
+                if (element.personnelDetails.projectAssignedTo !== null) {
+                    return personnelOptions.push(
+                        {
+                            id: element.personnelDetails.id,
+                            text: element.personnelDetails.firstName + " " + element.personnelDetails.lastName,
+                            value: element.personnelDetails.firstName + " " + element.personnelDetails.lastName
+                        }
+                    );
+                    
+                }
+                
+
             });
         }
         if(this.props.vehicleFeed.loading === false) { 
             let tempOp = this.props.vehicleFeed.vehicleDisplayFeed;
+            vehicleOptions = [];
             tempOp.map(element => {
-                vehicleOptions.push({ id: element.id, text: element.registrationNumber, value: element.registrationNumber });
+               return vehicleOptions.push({ id: element.id, text: element.registrationNumber, value: element.registrationNumber });
+                
             });
         }
         return (
@@ -134,15 +145,18 @@ class AssignVehicle extends Component {
 
     _assignVehicle = async () => { 
         const {
-            personnelId,
-            id
-            
+            motorVehicleId,
+            assigneeId
+                
         } = this.state;
-        let assigned = true;
-        await this.props.createDriver({
+        const dateOfAssignment = moment().format()
+        await this.props.assignVehicle({
             variables: {
-                personnelId, id, assigned
-            }
+                motorVehicleId,
+                assigneeId,
+                dateOfAssignment
+            },
+            refetchQueries: [{ query: DRIVERSFEEDQUERY }]
         });
     
         this.props.history.push('/drivers/list')
@@ -167,24 +181,30 @@ query DriversQueryFeed{
       id
       firstName
       lastName
+      projectAssignedTo{
+        id
+      }
     }
   }
 }
 `;
 
 const CREATEASSIGNVEHICLEMUTATION = gql`
-mutation assignVehicle(
-  $vehicleId:ID!,
-  $assigneeId: String!,
-  $assignedStatus: BoolMean!
+mutation  assignVehicle(
+      $motorVehicleId:String!
+      $assigneeId:String!
+      $dateOfAssignment:DateTime!
+     
+      
 ){
-  editVehicleAssignee(
-    id:$vehicleId,
-  assigneeId:$assigneeId,
-  assigned:$assignedStatus
-  ){
-    id
+    addVehicleAssignment(
+      motorVehicleId:$motorVehicleId
+      assigneeId:$assigneeId
+      dateOfAssignment:$dateOfAssignment
     
+      
+    ){
+    id
   }
 }
 `;

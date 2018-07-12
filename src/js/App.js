@@ -12,35 +12,43 @@ import Signup from './Signup';
 class App extends Component {
   render() {
     const authToken = localStorage.getItem(AUTH_TOKEN);
-    console.log(this.props.location.pathname);
+  
     if (this.props.location.pathname ==='/signup') return <Signup/>
     return (
-      <Segment>
-        <Button
-          icon="lock"
-          color="green"
-          iconPosition="right"
-          floated="right"
-          onClick={() => {
-            localStorage.removeItem(AUTH_TOKEN);
-            this.props.history.push(`/`);
-          }}
-        >
-          {' '}
-          Log Out{' '}
-        </Button>
-        <div>
-          <Header as="h2" icon textAlign="center">
-            <Icon name="home" color="green" circular />
+      <React.Fragment>
+        
 
-            <Header.Content>Karakana Inventory System</Header.Content>
-          </Header>
-        </div>
+        {authToken ?
+             (<Segment>
+            <Button
+            color="green"           
+            floated="right"
+            onClick={() => {
+              localStorage.removeItem(AUTH_TOKEN);
+              this.props.history.push(`/`);
+            }}
+          >
+            {' '}
+            Log Out{' '}
+          </Button>
+          <div>
+            <Header as="h2" icon textAlign="center">
+              <Icon name="home" color="green" circular />
 
-        <Divider clearing />
+              <Header.Content>Karakana Inventory System</Header.Content>
+            </Header>
+          </div>
 
-        {authToken ? <HomePage /> : <LoginForm />}
-      </Segment>
+          <Divider clearing />
+            <HomePage />
+            </Segment>)
+          :
+         
+            <LoginForm />
+         
+          
+        }
+      </React.Fragment>
     );
   }
 }

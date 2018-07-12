@@ -218,4 +218,6 @@ class SearchPersonnelAssign extends Component {
     }
 }
  
-export default graphql(ProjectFeedQuery, { name: 'projectFeed' })(withApollo(SearchPersonnelAssign));
+export default
+    graphql(ProjectFeedQuery, { name: 'projectFeed' })
+        (withApollo(SearchPersonnelAssign));

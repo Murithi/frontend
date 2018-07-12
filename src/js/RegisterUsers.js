@@ -41,6 +41,7 @@ var options = [
   { text: "Admin", value: 'ADMIN' },
   { text: "SuperUser", value: 'SUPERUSER' },
   { text: "Director", value: 'DIRECTOR' },
+  { text: "Accountant", value: 'ACCOUNTANT' },
   { text: "User", value: 'USER' }
   
 ];

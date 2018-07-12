@@ -10,7 +10,7 @@ mutation createProject(
     $projectLocation: String!
 
     ){
-        addRole(
+        addProject(
             projectName:$projectName,
             projectDescription:$projectDescription,
             projectValuation:$projectValuation,

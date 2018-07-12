@@ -5,6 +5,7 @@ import _ from 'lodash';
 import InlineError from './messages/InlineError';
 import  { Dropdown, Divider, Form, Segment, Grid, Header, Message } from 'semantic-ui-react';
 import { gql } from 'graphql-tag';
+import Role_Feed_Query from './queries/fetchRoles';
 import CREATEROLEMUTATION from './mutations/createRole';
 var options = [];
 class PersonnelRolesCreate extends Component {
@@ -105,7 +106,8 @@ class PersonnelRolesCreate extends Component {
                 roleName,
                 minimumSalary,
                 maximumSalary
-            }
+            },
+            refetchQueries: [{query: Role_Feed_Query}]
         });
         this.props.history.push('/personnel/roles/list');
     };

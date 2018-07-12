@@ -3,7 +3,8 @@ import DatePicker from 'react-datepicker';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import InlineError from './messages/InlineError';
-import { Form, Segment, Grid, Header, Message, Dropdown, Divider, Image } from 'semantic-ui-react';
+import { Form, Segment, Grid, Header, Message, Dropdown, Divider } from 'semantic-ui-react';
+import DRIVERSFEEDQUERY from './queries/fetchDrivers';
 
 var personnelOptions = [];
 var vehicleOptions = [];
@@ -14,6 +15,7 @@ class DriversAdd extends Component {
             personnelvalue: '',
             licenseExpiry: '',
             licenseNumber: '',
+            personnelId:'',
             errors: {},
             loading:false
          }
@@ -25,21 +27,21 @@ class DriversAdd extends Component {
         
         this.setState({ licenseNumber: data.value });
     };
-    setValue = (e, data) => {
-        
+    setValue = (e, data) => {  
+        console.log(data);
+        console.log(personnelOptions);
         personnelOptions.forEach(element => {
             if (element.value === data.value) { 
-                console.log(element.value);
-                console.log(data.value);
-                this.setState({ personnelvalue: data.value });
-                this.setState({ personnelId: element.id });
-                return;
-            }
-            
-        });
-        
-        this.setState({ personnelvalue: data.value });
+                console.log(element.id);
+                this.setState({ personnelvalue: element.value });
+                this.setState({ personnelId: element.id });                
+            }            
+        });        
+     
     };
+
+
+
     
     validate = () => { 
         const errors = {};
@@ -60,16 +62,23 @@ class DriversAdd extends Component {
     render() {
         
         const { errors, loading } = this.state;
-        if(this.props.personnelFeed.loading === false) { 
-            let tempOps = this.props.personnelFeed.personnelFeed;
-            tempOps.map(element => {
-                personnelOptions.push({ id: element.id, text: element.firstName + " " + element.lastName, value: element.firstName + " " + element.lastName });
-            });
+        
+        if (this.props.personnelFeed.loading === false) { 
+          
+            if (this.props.personnelFeed.personnelRoleFeedByDesignation[0].personnels !== undefined || this.props.personnelFeed.personnelRoleFeedByDesignation[0].personnels !== null) {
+                let tempOps = this.props.personnelFeed.personnelRoleFeedByDesignation[0].personnels;
+                personnelOptions = [];
+                tempOps.map(element => {
+                return  personnelOptions.push({ id: element.id, text: element.firstName + " " + element.lastName, value: element.firstName + " " + element.lastName });
+                });
+            }
+            
         }
         if(this.props.vehicleFeed.loading === false) { 
             let tempOp = this.props.vehicleFeed.vehicleDisplayFeed;
+            vehicleOptions = [];
             tempOp.map(element => {
-                vehicleOptions.push({ id: element.id, text: element.registrationNumber, value: element.registrationNumber });
+              return  vehicleOptions.push({ id: element.id, text: element.registrationNumber, value: element.registrationNumber });
             });
         }
 
@@ -123,7 +132,8 @@ class DriversAdd extends Component {
     _createDriver = async () => { 
         const { personnelId, licenseExpiry, licenseNumber } = this.state;
         await this.props.createDriver({
-            variables: { personnelId, licenseExpiry, licenseNumber }
+            variables: { personnelId, licenseExpiry, licenseNumber },
+            refetchQueries: [{query: DRIVERSFEEDQUERY}]
         });
     
         this.props.history.push('/drivers/list')
@@ -134,12 +144,16 @@ class DriversAdd extends Component {
 
 const PERSONNELFEEDQUERY = gql`
 query personnelTitleFeed{
-  personnelFeed{
-    id
-    firstName
-    lastName
+  personnelRoleFeedByDesignation(filter:"Driver"){
+    roleName
+    personnels{
+        id
+      firstName
+      lastName
+    }
   }
 }
+
 `;
 
 const VEHICLEFEEDQUERY = gql`

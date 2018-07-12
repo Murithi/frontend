@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import moment from 'moment';
 import gql from 'graphql-tag';
-import { Link, Route } from 'react-router-dom';
-import { Header, Table, Grid, Message, Icon, Menu } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import { Header, Table,  Message, Icon, Menu } from 'semantic-ui-react';
 import SectionFeedQuery from './queries/fetchSections';
 
 class SectionsList extends Component {
@@ -12,7 +12,7 @@ class SectionsList extends Component {
         this.state = {  }
     }
     render() { 
-        console.log(this.props.sectionFeed);
+        
         const loadingMessage = (
             <Message icon info>
               <Icon name="circle notched" loading />

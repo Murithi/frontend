@@ -6,7 +6,7 @@ import InlineError from './messages/InlineError';
 import  {   Divider, Form, Segment, Grid, Header, Message, Dropdown } from 'semantic-ui-react';
 import gql from 'graphql-tag';
 import DatePicker from 'react-datepicker';
-
+import SectionFeedQuery from './queries/fetchSections';
 import ProjectFeedQuery from './queries/fetchProjectList';
 var options = [];
 class SectionsCreate extends Component {
@@ -139,7 +139,7 @@ class SectionsCreate extends Component {
     }
 
     _createSection = async () => {
-        console.log('creating');
+        
         const {
             sectionName,
             sectionDescription,
@@ -158,7 +158,9 @@ class SectionsCreate extends Component {
                 sectionStartDate,
                 sectionCompletionDate,
                 sectionLocation
-            }
+            },
+            
+            refetchQueries: [{query: SectionFeedQuery}]
         });
       
         this.props.history.push('/sections/list');

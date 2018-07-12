@@ -69,6 +69,7 @@ class PersonnelList extends Component {
               <Table.HeaderCell>First Name</Table.HeaderCell>
               <Table.HeaderCell>Last Name</Table.HeaderCell>
               <Table.HeaderCell>Designation </Table.HeaderCell>
+              <Table.HeaderCell>Project </Table.HeaderCell>
               <Table.HeaderCell> Edit</Table.HeaderCell>
               <Table.HeaderCell> Delete</Table.HeaderCell>
             </Table.Row>
@@ -81,7 +82,8 @@ class PersonnelList extends Component {
                 </Table.Cell>
                 <Table.Cell>{person.firstName}</Table.Cell>
                 <Table.Cell>{person.lastName}</Table.Cell>
-                <Table.Cell>{person.designation}</Table.Cell>
+                <Table.Cell>{person.designation.roleName}</Table.Cell>
+                <Table.Cell>{(person.projectAssignedTo) ? person.projectAssignedTo.projectName : person.projectAssignedTo }</Table.Cell>
                 <Table.Cell>
                   <Link to={`/personnel/edit/${person.id}`}>
                     <Icon name="edit circle green " />
